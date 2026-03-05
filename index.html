@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Marc'sNet</title>
 
 <style>
@@ -97,12 +97,6 @@ button:hover {
     text-decoration: underline;
 }
 
-.result-description {
-    font-size: 0.9em;
-    opacity: 0.8;
-    margin-top: 6px;
-}
-
 .loading {
     text-align: center;
     margin-top: 20px;
@@ -116,7 +110,7 @@ button:hover {
 
 <div class="container">
     <h1>Marc'sNet</h1>
-    <input type="text" id="searchBox" placeholder="Search the deep web...">
+    <input type="text" id="searchBox" placeholder="Search the deep web..." />
     <button onclick="doSearch()">Search</button>
 
     <div class="loading" id="loading"></div>
@@ -135,42 +129,57 @@ async function doSearch() {
     loading.innerText = "Searching the ocean depths...";
 
     try {
-        // 🔥 CHANGE THIS if your API is hosted elsewhere
-        const response = await fetch(`/api/search?q=${encodeURIComponent(query)}`);
+        const corsProxy = "https://api.allorigins.win/raw?url=";
+        const apiUrl = `https://api.duckduckgo.com/?q=${encodeURIComponent(query)}&format=json&no_html=1&skip_disambig=1`;
+
+        const response = await fetch(corsProxy + encodeURIComponent(apiUrl));
         const data = await response.json();
 
         loading.innerText = "";
 
-        if (!data || !data.results || data.results.length === 0) {
-            resultsDiv.innerHTML = `
-                <div class="result-item">
-                    No results found.
-                </div>
-            `;
-            return;
+        let results = [];
+
+        if (data.RelatedTopics) {
+            data.RelatedTopics.forEach(item => {
+                if (item.Text && item.FirstURL) {
+                    results.push({
+                        text: item.Text,
+                        url: item.FirstURL
+                    });
+                }
+                if (item.Topics) {
+                    item.Topics.forEach(sub => {
+                        if (sub.Text && sub.FirstURL) {
+                            results.push({
+                                text: sub.Text,
+                                url: sub.FirstURL
+                            });
+                        }
+                    });
+                }
+            });
         }
 
-        data.results.slice(0, 8).forEach(result => {
+        if (results.length === 0) {
+            results.push({
+                text: `Search "${query}" on DuckDuckGo`,
+                url: "https://duckduckgo.com/?q=" + encodeURIComponent(query)
+            });
+        }
+
+        results.slice(0, 8).forEach(result => {
             const div = document.createElement("div");
             div.className = "result-item";
-
             div.innerHTML = `
-                <a href="${result.url}" target="_blank">
-                    ${result.title || "Untitled"}
+                <a href="${result.url}" target="_blank" rel="noopener noreferrer">
+                    ${result.text}
                 </a>
-                ${result.description ? `<div class="result-description">${result.description}</div>` : ""}
             `;
-
             resultsDiv.appendChild(div);
         });
 
     } catch (error) {
-        loading.innerText = "";
-        resultsDiv.innerHTML = `
-            <div class="result-item">
-                API error. Please try again.
-            </div>
-        `;
+        loading.innerText = "API error. Please try again.";
         console.error(error);
     }
 }
