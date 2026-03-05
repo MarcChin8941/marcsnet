@@ -1,95 +1,175 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Marc'sNet</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MarcsNet</title>
 
 <style>
+:root {
+    --primary-light: 185, 120, 240;
+    --primary-mid: 175, 100, 240;
+    --primary-dark: 160, 100, 240;
+    --background-dark: 0, 0, 0;
+    --background-light: 30, 15, 40;
+}
+
 body {
     margin: 0;
     font-family: Arial, sans-serif;
     background: radial-gradient(circle at center, #001f3f 0%, #000 80%);
     color: white;
     overflow-x: hidden;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
 }
 
-.explosion {
+.main {
+    text-align: center;
+    padding: 5vh 2vw;
+    position: relative;
+    width: 100%;
+    max-width: 900px;
+}
+
+.glow {
     position: fixed;
     top: 50%;
     left: 50%;
-    width: 400px;
-    height: 400px;
-    margin-left: -200px;
-    margin-top: -200px;
-    border-radius: 50%;
-    background: radial-gradient(circle, rgba(0,255,255,0.8) 0%, rgba(0,0,128,0.1) 70%);
-    animation: pulse 3s infinite;
-    z-index: -1;
+    width: 700px;
+    height: 700px;
+    margin-left: -350px;
+    margin-top: -350px;
+    background: radial-gradient(circle, rgba(46, 204, 113, 0.35), transparent 70%);
+    animation: pulse 6s infinite alternate;
+    z-index: 0;
 }
 
 @keyframes pulse {
-    0% { transform: scale(0.8); opacity: 0.6; }
-    50% { transform: scale(1.3); opacity: 1; }
-    100% { transform: scale(0.8); opacity: 0.6; }
-}
-
-.container {
-    text-align: center;
-    padding-top: 15vh;
+    from { transform: scale(1); opacity: 0.6; }
+    to { transform: scale(1.3); opacity: 0.3; }
 }
 
 h1 {
-    font-size: 3em;
-    color: #00ffff;
-    text-shadow: 0 0 15px #00ffff;
+    font-size: 56px;
+    margin: 0;
+    position: relative;
+    z-index: 1;
 }
 
-input[type="text"] {
-    width: 60%;
-    padding: 12px;
-    font-size: 1.2em;
-    border-radius: 25px;
-    border: none;
-    outline: none;
+h1 span.v4 {
+    text-shadow: 0 0 8px rgb(var(--primary-mid));
+    color: rgb(var(--primary-mid));
 }
 
-button {
-    padding: 12px 20px;
-    font-size: 1.1em;
-    border-radius: 25px;
-    border: none;
-    background-color: #00ffff;
-    color: #001f3f;
+#quote {
+    display: block;
+    margin: 10px auto;
     cursor: pointer;
-    margin-left: 10px;
+    width: 80vw;
+    user-select: none;
+    z-index: 1;
 }
 
-button:hover {
-    background-color: #00bbbb;
+.tabs {
+    margin: 15px 0;
+    position: relative;
+    z-index: 1;
 }
 
-.results {
-    margin: 40px auto;
-    max-width: 800px;
-    text-align: left;
-}
-
-.result-item {
-    background: rgba(0,255,255,0.1);
-    padding: 15px;
-    margin-bottom: 15px;
-    border-radius: 15px;
+.tabs button {
+    background: transparent;
+    border: none;
+    color: white;
+    margin: 0 10px;
+    font-size: 1em;
+    cursor: pointer;
+    opacity: 0.7;
+    padding: 5px 15px;
+    border-radius: 20px;
     transition: 0.3s;
 }
 
-.result-item:hover {
-    background: rgba(0,255,255,0.25);
+.tabs button.active {
+    background: rgba(var(--primary-light),0.3);
+    opacity: 1;
+}
+
+.tabs button:hover {
+    opacity: 1;
+}
+
+.search-box {
+    display: flex;
+    justify-content: center;
+    margin: 15px auto;
+    position: relative;
+    z-index: 1;
+}
+
+.search-box input {
+    width: 60%;
+    max-width: 500px;
+    padding: 12px 20px;
+    border-radius: 25px 0 0 25px;
+    border: none;
+    outline: none;
+    font-size: 1em;
+}
+
+.search-box button {
+    border-radius: 0 25px 25px 0;
+    border: none;
+    padding: 0 25px;
+    background: rgb(var(--primary-mid));
+    color: white;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.search-box button:hover {
+    background: rgb(var(--primary-dark));
+}
+
+.buttons {
+    margin: 10px 0;
+    z-index: 1;
+}
+
+.buttons button {
+    background: rgba(var(--primary-light),0.2);
+    border: none;
+    padding: 8px 15px;
+    margin: 5px;
+    border-radius: 20px;
+    color: white;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.buttons button:hover {
+    background: rgba(var(--primary-light),0.35);
+}
+
+.results {
+    margin: 20px auto;
+    max-width: 800px;
+    text-align: left;
+    position: relative;
+    z-index: 1;
+}
+
+.result-item {
+    background: rgba(var(--primary-light), 0.1);
+    padding: 12px;
+    margin-bottom: 10px;
+    border-radius: 12px;
 }
 
 .result-item a {
-    color: #00ffff;
-    font-size: 1.1em;
+    color: rgb(var(--primary-mid));
     text-decoration: none;
 }
 
@@ -99,95 +179,163 @@ button:hover {
 
 .loading {
     text-align: center;
-    margin-top: 20px;
+    margin-top: 10px;
+    position: relative;
+    z-index: 1;
+}
+
+.tooltip {
+    position: absolute;
+    background: rgba(27, 13, 41, 0.7);
+    color: white;
+    border-radius: 5px;
+    padding: 5px;
+    font-size: 14px;
+    font-family: sans-serif;
+    white-space: nowrap;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.2s ease-in-out, transform 0.1s ease-in-out;
+    z-index: 9999;
+}
+
+.tooltip.show {
+    opacity: 1;
+    transform: translateY(0);
 }
 </style>
 </head>
 
 <body>
+<div class="glow"></div>
 
-<div class="explosion"></div>
+<div class="main">
+    <h1>UniUB <span class="v4">v4</span></h1>
+    <span id="quote">"Me like destroying admins - Darrell"</span>
 
-<div class="container">
-    <h1>Marc'sNet</h1>
-    <input type="text" id="searchBox" placeholder="Search the deep web..." />
-    <button onclick="doSearch()">Search</button>
+    <div class="tabs">
+        <button class="active" onclick="setSearch('web', this)">Web</button>
+        <button onclick="setSearch('images', this)">Images</button>
+        <button onclick="setSearch('news', this)">News</button>
+    </div>
+
+    <form class="search-box" onsubmit="handleSearch(event)">
+        <input type="text" id="searchInput" placeholder="Search the web..." required>
+        <button type="submit">Search</button>
+    </form>
+
+    <div class="buttons">
+        <button onclick="luckySearch()">I'm Feeling Lucky</button>
+        <button onclick="window.open('/dsc')">Join DSC</button>
+        <button onclick="window.open('https://forms.gle/KZodoBmWiAt8kJCHA')">Request</button>
+    </div>
 
     <div class="loading" id="loading"></div>
     <div class="results" id="results"></div>
 </div>
 
+<span class="tooltip"></span>
+
 <script>
-async function doSearch() {
-    const query = document.getElementById("searchBox").value.trim();
-    const resultsDiv = document.getElementById("results");
-    const loading = document.getElementById("loading");
+let currentType = "web";
 
-    if (!query) return;
-
-    resultsDiv.innerHTML = "";
-    loading.innerText = "Searching the ocean depths...";
-
-    try {
-        const corsProxy = "https://api.allorigins.win/raw?url=";
-        const apiUrl = `https://api.duckduckgo.com/?q=${encodeURIComponent(query)}&format=json&no_html=1&skip_disambig=1`;
-
-        const response = await fetch(corsProxy + encodeURIComponent(apiUrl));
-        const data = await response.json();
-
-        loading.innerText = "";
-
-        let results = [];
-
-        if (data.RelatedTopics) {
-            data.RelatedTopics.forEach(item => {
-                if (item.Text && item.FirstURL) {
-                    results.push({
-                        text: item.Text,
-                        url: item.FirstURL
-                    });
-                }
-                if (item.Topics) {
-                    item.Topics.forEach(sub => {
-                        if (sub.Text && sub.FirstURL) {
-                            results.push({
-                                text: sub.Text,
-                                url: sub.FirstURL
-                            });
-                        }
-                    });
-                }
-            });
-        }
-
-        if (results.length === 0) {
-            results.push({
-                text: `Search "${query}" on DuckDuckGo`,
-                url: "https://duckduckgo.com/?q=" + encodeURIComponent(query)
-            });
-        }
-
-        results.slice(0, 8).forEach(result => {
-            const div = document.createElement("div");
-            div.className = "result-item";
-            div.innerHTML = `
-                <a href="${result.url}" target="_blank" rel="noopener noreferrer">
-                    ${result.text}
-                </a>
-            `;
-            resultsDiv.appendChild(div);
-        });
-
-    } catch (error) {
-        loading.innerText = "API error. Please try again.";
-        console.error(error);
-    }
+function setSearch(type, el) {
+    currentType = type;
+    document.querySelectorAll(".tabs button").forEach(btn => btn.classList.remove("active"));
+    el.classList.add("active");
 }
 
-document.getElementById("searchBox").addEventListener("keypress", function(e) {
-    if (e.key === "Enter") doSearch();
+// JSONP callback for DuckDuckGo
+function handleResults(data) {
+    const resultsDiv = document.getElementById("results");
+    const loading = document.getElementById("loading");
+    resultsDiv.innerHTML = "";
+    loading.innerText = "";
+
+    let results = [];
+    if (data.RelatedTopics) {
+        data.RelatedTopics.forEach(item => {
+            if (item.Text && item.FirstURL) {
+                results.push({ text: item.Text, url: item.FirstURL });
+            }
+            if (item.Topics) {
+                item.Topics.forEach(sub => {
+                    if (sub.Text && sub.FirstURL) {
+                        results.push({ text: sub.Text, url: sub.FirstURL });
+                    }
+                });
+            }
+        });
+    }
+
+    if (results.length === 0) {
+        const query = document.getElementById("searchInput").value.trim();
+        results.push({
+            text: `Search "${query}" on DuckDuckGo`,
+            url: "https://duckduckgo.com/?q=" + encodeURIComponent(query),
+        });
+    }
+
+    results.slice(0, 8).forEach(result => {
+        const div = document.createElement("div");
+        div.className = "result-item";
+        div.innerHTML = `<a href="${result.url}" target="_blank" rel="noopener noreferrer">${result.text}</a>`;
+        resultsDiv.appendChild(div);
+    });
+}
+
+// Handle search form submit
+function handleSearch(e) {
+    e.preventDefault();
+    const query = document.getElementById("searchInput").value.trim();
+    if (!query) return;
+
+    document.getElementById("loading").innerText = "Searching the ocean depths...";
+    document.getElementById("results").innerHTML = "";
+
+    // Remove previous JSONP script if exists
+    const oldScript = document.getElementById("jsonpScript");
+    if (oldScript) oldScript.remove();
+
+    const script = document.createElement("script");
+    script.id = "jsonpScript";
+    script.src = `https://api.duckduckgo.com/?q=${encodeURIComponent(query)}&format=json&no_html=1&skip_disambig=1&callback=handleResults`;
+    document.body.appendChild(script);
+}
+
+function luckySearch() {
+    const query = document.getElementById("searchInput").value.trim();
+    if (!query) return;
+    window.location.href = "https://duckduckgo.com/?q=" + encodeURIComponent(query);
+}
+
+// Recent searches
+function saveRecent(query) {
+    let searches = JSON.parse(localStorage.getItem("marcsnet_recent")) || [];
+    if (!searches.includes(query)) {
+        searches.unshift(query);
+        searches = searches.slice(0,5);
+        localStorage.setItem("marcsnet_recent", JSON.stringify(searches));
+    }
+    loadRecent();
+}
+
+function loadRecent() {
+    let searches = JSON.parse(localStorage.getItem("marcsnet_recent")) || [];
+    const container = document.getElementById("results");
+    searches.forEach(q => {
+        const div = document.createElement("div");
+        div.className = "result-item";
+        div.innerHTML = `<span onclick="document.getElementById('searchInput').value='${q}';">${q}</span>`;
+        container.appendChild(div);
+    });
+}
+
+loadRecent();
+
+document.getElementById("searchInput").addEventListener("keypress", function(e) {
+    if (e.key === "Enter") handleSearch(e);
 });
 </script>
-
 </body>
 </html>
